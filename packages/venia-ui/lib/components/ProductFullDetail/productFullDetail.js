@@ -173,11 +173,8 @@ const ProductFullDetail = props => {
                     <h1 className={classes.productName}>
                         {productDetails.name}
                     </h1>
-                    <p className={classes.productPrice}>
-                        <Price
-                            currencyCode={productDetails.price.currency}
-                            value={productDetails.price.value}
-                        />
+                    <p>
+                        <span>{productDetails.sku}</span>
                     </p>
                 </section>
                 <section className={classes.imageCarousel}>
@@ -204,6 +201,12 @@ const ProductFullDetail = props => {
                     />
                 </section>
                 <section className={classes.actions}>
+                    <p className={classes.productPrice}>
+                        <Price
+                            currencyCode={productDetails.price.currency}
+                            value={productDetails.price.value}
+                        />
+                    </p>
                     {cartActionContent}
                     <Suspense fallback={null}>
                         <WishlistButton {...wishlistButtonProps} />
