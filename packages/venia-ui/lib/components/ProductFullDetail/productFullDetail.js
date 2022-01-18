@@ -13,12 +13,11 @@ import Breadcrumbs from '../Breadcrumbs';
 import Button from '../Button';
 import Carousel from '../ProductImageCarousel';
 import FormError from '../FormError';
-import { QuantityFields } from '../CartPage/ProductListing/quantity';
+import { QuantityFields, Quantity } from '../CartPage/ProductListing/quantity';
 import RichContent from '../RichContent/richContent';
 import { ProductOptionsShimmer } from '../ProductOptions';
 import defaultClasses from './productFullDetail.module.css';
 
-import RelatedProducts from '../RelatedProducts';
 import LinkedProducts from '../LinkedProducts';
 
 const WishlistButton = React.lazy(() => import('../Wishlist/AddToListButton'));
@@ -40,7 +39,7 @@ const ERROR_FIELD_TO_MESSAGE_MAPPING = {
 
 const ProductFullDetail = props => {
     const { product } = props;
-    console.log('product >>>> ', product);
+console.log('product >>>',product);
     const talonProps = useProductFullDetail({ product });
 
     const {
@@ -53,8 +52,12 @@ const ProductFullDetail = props => {
         isSupportedProductType,
         mediaGalleryEntries,
         productDetails,
+        productLinkedItems,
         wishlistButtonProps
     } = talonProps;
+console.log('productDetails >>>',productDetails);
+console.log('productLinkedItems LIST >>>',productLinkedItems);
+
     const { formatMessage } = useIntl();
 
     const classes = useStyle(defaultClasses, props.classes);
@@ -192,6 +195,9 @@ const ProductFullDetail = props => {
                         value={productDetails.price.value}
                     />
                 </section>
+                <section className={classes.linkedProducts}>
+                    {/*<LinkedProducts classesName={classes} productLinkedItems={productLinkedItems.linked_products} options={options} mediaGalleryEntries={mediaGalleryEntries} />*/}
+                </section>
                 <section className={classes.imageCarousel}>
                     <Carousel images={mediaGalleryEntries} />
                 </section>
@@ -203,20 +209,33 @@ const ProductFullDetail = props => {
                 />
                 <section className={classes.options}>{options}</section>
                 <section className={classes.quantity}>
-                    <span className={classes.quantityTitle}>
-                        <FormattedMessage
-                            id={'global.quantity'}
-                            defaultMessage={'Vnt.'}
+                    <div className={classes.productAction}>
+                        {/*<span className={classes.quantityTitle}>*/}
+                        <span>
+                            <FormattedMessage
+                                id={'global.quantity'}
+                                defaultMessage={'Vnt.'}
+                            />
+                        </span>
+                        <QuantityFields
+                            classes={{ root: classes.quantityRoot }}
+                            min={1}
+                            message={errors.get('quantity')}
+                            itemId={product.id}
                         />
-                    </span>
-                    {/*<QuantityFields
-                        classes={{ root: classes.quantityRoot }}
-                        min={1}
-                        message={errors.get('quantity')}
+
+                        {cartActionContent}
+                    </div>
+
+                    {/*<Quantity
+                        // itemId={product.id}
+                        // initialValue={1}
+                        // onChange={handleUpdateItemQuantity}
+                        {...defaultProps}
                     />*/}
                 </section>
                 <section className={classes.actions}>
-                    {cartActionContent}
+                    {/*{cartActionContent}*/}
                     <Suspense fallback={null}>
                         <WishlistButton {...wishlistButtonProps} />
                     </Suspense>
@@ -230,23 +249,19 @@ const ProductFullDetail = props => {
                     </span>
                     <RichContent html={productDetails.description} />
                 </section>
-                <section className={classes.linkedProducts}>
-                    <LinkedProducts classesName={classes} productDetails={productDetails} options={options} mediaGalleryEntries={mediaGalleryEntries} />
-                </section>
 
-                {/*<section className={classes.lpSec}>*/}
-                {/*    <LinkedProducts className={classes.linkedProducts} productDetails={productDetails} options={options} mediaGalleryEntries={mediaGalleryEntries} />*/}
-                {/*</section>*/}
-
+                {/*<section className={classes.lpSec}>
+                    <LinkedProducts className={classes.linkedProducts} productDetails={productDetails} options={options} mediaGalleryEntries={mediaGalleryEntries} />
+                </section>*/}
+                {/*<LinkedProducts productDetails={productDetails}  />*/}
             </Form>
-
-            {/*<RelatedProducts sku={productDetails.sku} classesName={classes}  />*/}
         </Fragment>
     );
 };
 
 ProductFullDetail.propTypes = {
     classes: shape({
+        productAction: string,
         lpSec: string,
         linkedProducts: string,
         cartActions: string,

@@ -21,115 +21,14 @@
 }
 
 .items {
-    /*display: grid;*/
-    /*grid-area: items;*/
-    /*grid-gap: 1rem;*/
-    /*grid-template-columns: repeat(3, 1fr);*/
-    /*margin-bottom: 10px;*/
+    display: grid;
+    grid-area: items;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(1, 1fr);
+    margin-bottom: 10px;
 }
-.item{
+/*.item{
     display: inline-block;
     margin: 5px;
     width: 100%;
-}
-
-.linkedProductPrice {
-    display: inline-block;
-    color: #e74c3c;
-    font-size: 125%;
-    grid-area: options;
-}
-.imageContainer {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0 1rem;
-}
-
-span.linkedProductName {
-    display: inline-block;
-    max-width: 300px;
-    vertical-align: middle;
-    font-size: 14px;
-    line-height:1.43;
-}
-
-.quantity{
-    background:#00aa88;
-}
-.quantityTitle {
-    background:#00ccff;
-}
-@media (max-width: 640px) {
-    .items {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-
-/*test*/
-.block_quantity {
-    position: relative;
-    height: 46px;
-    margin-top: 45px;
-}
-.block_quantity span {
-    display: inline-block;
-    float: left;
-    margin-top: 15px;
-    margin-right: 10px;
-}
-
-.text_specification {
-    padding: 0;
-    color: #37474f;
-    font-size: 13px;
-}
-.block_quantity__chooseBlock {
-    vertical-align: top;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-.block_quantity__number {
-    display: inline-block;
-    float: left;
-    width: 52px;
-    height: 46px;
-    border: 1px solid #ddd;
-    font-size: 18px;
-}
-/*.block_quantity__button {*/
-.block_quantity__chooseBlock button {
-    display: inline-block;
-    position: relative;
-    float: left;
-    width: 20px;
-    height: 50%;
-    margin: 0;
-    padding: 0;
-    margin-left: 11px;
-    font-size: 0;
-    cursor: pointer;
-}
-.block_quantity__chooseBlock button:hover, .block_quantity__chooseBlock button:focus {
-    background-color: transparent;
-}
-.block_quantity__chooseBlock button:hover:before, .block_quantity__chooseBlock button:focus:before {
-    color: #536dfe;
-}
-.block_quantity__up:before {
-    content: "\002B";
-    width: 11px;
-    height: 6px;
-    /*font-family: "FontAwesome";*/
-    color: #37474f;
-    font-size: 18px;
-}
-.block_quantity__down:before {
-    content: "\002D";
-    width: 11px;
-    height: 6px;
-    /*font-family: "FontAwesome";*/
-    color: #37474f;
-    font-size: 18px;
-}
+}*/

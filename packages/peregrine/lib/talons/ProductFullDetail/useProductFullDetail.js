@@ -225,7 +225,7 @@ export const useProductFullDetail = props => {
         }
     ] = useMutation(
         addConfigurableProductToCartMutation ||
-            operations.addConfigurableProductToCartMutation
+        operations.addConfigurableProductToCartMutation
     );
 
     const [
@@ -233,7 +233,7 @@ export const useProductFullDetail = props => {
         { error: errorAddingSimpleProduct, loading: isAddSimpleLoading }
     ] = useMutation(
         addSimpleProductToCartMutation ||
-            operations.addSimpleProductToCartMutation
+        operations.addSimpleProductToCartMutation
     );
 
     const [
@@ -293,7 +293,7 @@ export const useProductFullDetail = props => {
         }
         return map;
     }, [product.configurable_options]);
-console.log('attributeIdToValuesMap >>>', attributeIdToValuesMap);
+
     // An array of selected option uids. Useful for passing to mutations.
     // For example:
     // ["abc", "def"]
@@ -313,7 +313,6 @@ console.log('attributeIdToValuesMap >>>', attributeIdToValuesMap);
         });
         return selectedOptions;
     }, [attributeIdToValuesMap, optionSelections]);
-console.log('selectedOptionsArray >>>',selectedOptionsArray);
 
     const handleAddToCart = useCallback(
         async formValues => {
@@ -323,7 +322,7 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
                 @deprecated in favor of general addProductsToCart mutation. Will support until the next MAJOR.
              */
             if (hasDeprecatedOperationProp) {
-                console.log('hasDeprecatedOperationProp ><><><><><><>', hasDeprecatedOperationProp);
+console.log('hasDeprecatedOperationProp ><><><><><><>', hasDeprecatedOperationProp);
                 const payload = {
                     item: product,
                     productType,
@@ -370,19 +369,20 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
                     );
                 }
             } else {
-                // const variables = {
-                //     cartId,
-                //     product: {
-                //         sku: product.sku,
-                //         quantity
-                //     },
-                //     entered_options: [
-                //         {
-                //             uid: product.uid,
-                //             value: product.name
-                //         }
-                //     ]
-                // };
+                console.log('Cart here');
+                const variables0 = {
+                    cartId,
+                    product: {
+                        sku: product.sku,
+                        quantity
+                    },
+                    entered_options: [
+                        {
+                            uid: product.uid,
+                            value: product.name
+                        }
+                    ]
+                };
 
                 /*const variables1111 = {
                     cartId,
@@ -414,44 +414,59 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
 
                     ]
                 };*/
+                console.log(cartId);
                 const variables = {
                     cartId,
                     cartItems: [
                         {
+                            quantity: quantity,
+                            sku: product.sku,
+                            // entered_options: [{
+                            //     uid: "MTA=",
+                            //     value: "Semper Bangle Set"
+                            // }]
+                        }
+                    ]
+                };
+                /*const variables = {
+                    cartId,
+                    cartItems: [
+                        {
                             quantity: 1,
-                            sku: "VA20-SI-NA",
+                            sku: "125038",
                             entered_options: [{
-                                uid: "MTA=",
-                                value: "Semper Bangle Set"
+                                uid: "MTI1MDM4",
+                                value: "Perceuse à percussion sans fil Bosch GSB 18V-110 C; 18 V; 2x5,0 Ah accu."
                             }]
                         },
                         {
                             quantity: 1,
-                            sku: "VA23",
+                            sku: "110080",
                             entered_options: [{
-                                uid: "MTE2Nw==",
-                                value: "Augusta Trio"
+                                uid: "MTEwMDgw",
+                                value: "Cache-oreilles pour diminuer le bruit Honeywell VeriShield VS110; 27 dB; 1 unités"
                             }]
                         },
                         {
                             quantity: 2,
-                            sku: "VA22-SI-NA",
+                            sku: "171838",
                             entered_options: [{
-                                uid: "MTI=",
-                                value: "Silver Amor Bangle Set"
+                                uid: "MTcxODM4",
+                                value: "Lunettes de protection Honeywell SVP200 Anti-Fog, transparent"
                             }]
                         },
 
                     ]
-                };
+                };*/
 
-
+                console.log('variables', variables);
 
                 if (selectedOptionsArray.length) {
                     variables.product.selected_options = selectedOptionsArray;
                 }
                 try {
                     await addProductsToCart({ variables });
+                    // await addProductToCart({ variables });
                 } catch {
                     return;
                 }
@@ -497,6 +512,11 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
         sku: product.sku,
     };
 
+    // Normalization object for product options (additional products list) details we need for rendering.
+    const productLinkedItems = {
+        linked_products: product.related_products
+    }
+
     const derivedErrorMessage = useMemo(
         () =>
             deriveErrorMessage([
@@ -530,13 +550,13 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
         buttonText: isSelected =>
             isSelected
                 ? formatMessage({
-                      id: 'wishlistButton.addedText',
-                      defaultMessage: 'Added to Favorites'
-                  })
+                    id: 'wishlistButton.addedText',
+                    defaultMessage: 'Added to Favorites'
+                })
                 : formatMessage({
-                      id: 'wishlistButton.addText',
-                      defaultMessage: 'Add to Favorites'
-                  }),
+                    id: 'wishlistButton.addText',
+                    defaultMessage: 'Add to Favorites'
+                }),
         item: wishlistItemOptions,
         storeConfig: storeConfigData ? storeConfigData.storeConfig : {}
     };
@@ -553,7 +573,7 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
             isAddConfigurableLoading ||
             isAddSimpleLoading ||
             isAddProductLoading,
-            isAddProductsLoading,
+        isAddProductsLoading,
         isSupportedProductType,
         mediaGalleryEntries,
         shouldShowWishlistButton:
@@ -561,6 +581,7 @@ console.log('selectedOptionsArray >>>',selectedOptionsArray);
             storeConfigData &&
             !!storeConfigData.storeConfig.magento_wishlist_general_is_enabled,
         productDetails,
+        productLinkedItems,
         wishlistButtonProps,
         wishlistItemOptions
     };
