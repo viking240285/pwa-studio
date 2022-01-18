@@ -17,6 +17,20 @@ export const ADD_PRODUCT_TO_CART = gql`
     ${MiniCartFragment}
 `;
 
+export const ADD_PRODUCTS_TO_CART = gql`
+    mutation AddProductsToCart($cartId: String!, $cartItems: [CartItemInput!]!) {
+        addProductsToCart(cartId: $cartId, cartItems: $cartItems) {
+            cart {
+                id
+                ...CartTriggerFragment
+                ...MiniCartFragment
+            }
+        }
+    }
+    ${CartTriggerFragment}
+    ${MiniCartFragment}
+`;
+
 export const GET_WISHLIST_CONFIG = gql`
     query GetWishlistConfigForProductCE {
         storeConfig {
@@ -91,6 +105,7 @@ export const ADD_SIMPLE_MUTATION = gql`
 export default {
     addConfigurableProductToCartMutation: ADD_CONFIGURABLE_MUTATION,
     addProductToCartMutation: ADD_PRODUCT_TO_CART,
+    addProductsToCartMutation: ADD_PRODUCTS_TO_CART,
     addSimpleProductToCartMutation: ADD_SIMPLE_MUTATION,
     getWishlistConfigQuery: GET_WISHLIST_CONFIG
 };

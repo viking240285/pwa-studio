@@ -12,6 +12,7 @@ import { Message } from '../../Field';
 import defaultClasses from './quantity.module.css';
 
 export const QuantityFields = props => {
+    console.log('props quantity >', props);
     const { initialValue, itemId, label, min, onChange, message } = props;
     const { formatMessage } = useIntl();
     const classes = useStyle(defaultClasses, props.classes);

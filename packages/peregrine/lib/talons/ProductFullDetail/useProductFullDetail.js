@@ -241,6 +241,11 @@ export const useProductFullDetail = props => {
         { error: errorAddingProductToCart, loading: isAddProductLoading }
     ] = useMutation(operations.addProductToCartMutation);
 
+    const [
+        addProductsToCart,
+        { error: errorAddingProductsToCart, loading: isAddProductsLoading }
+    ] = useMutation(operations.addProductsToCartMutation);
+
     const breadcrumbCategoryId = useMemo(
         () => getBreadcrumbCategoryId(product.categories),
         [product.categories]
@@ -288,7 +293,7 @@ export const useProductFullDetail = props => {
         }
         return map;
     }, [product.configurable_options]);
-
+console.log('attributeIdToValuesMap >>>', attributeIdToValuesMap);
     // An array of selected option uids. Useful for passing to mutations.
     // For example:
     // ["abc", "def"]
@@ -308,6 +313,7 @@ export const useProductFullDetail = props => {
         });
         return selectedOptions;
     }, [attributeIdToValuesMap, optionSelections]);
+console.log('selectedOptionsArray >>>',selectedOptionsArray);
 
     const handleAddToCart = useCallback(
         async formValues => {
@@ -317,6 +323,7 @@ export const useProductFullDetail = props => {
                 @deprecated in favor of general addProductsToCart mutation. Will support until the next MAJOR.
              */
             if (hasDeprecatedOperationProp) {
+                console.log('hasDeprecatedOperationProp ><><><><><><>', hasDeprecatedOperationProp);
                 const payload = {
                     item: product,
                     productType,
@@ -363,26 +370,88 @@ export const useProductFullDetail = props => {
                     );
                 }
             } else {
+                // const variables = {
+                //     cartId,
+                //     product: {
+                //         sku: product.sku,
+                //         quantity
+                //     },
+                //     entered_options: [
+                //         {
+                //             uid: product.uid,
+                //             value: product.name
+                //         }
+                //     ]
+                // };
+
+                /*const variables1111 = {
+                    cartId,
+                    cartItems: [
+                        {
+                            quantity: 1,
+                            sku: "VA20-SI-NA",
+                            // entered_options: [{
+                            //     uid: "MTA=",
+                            //     value: "Semper Bangle Set"
+                            // }]
+                        },
+                        {
+                            quantity: 1,
+                            sku: "VA23",
+                            // entered_options: [{
+                            //     uid: "MTE2Nw==",
+                            //     value: "Augusta Trio"
+                            // }]
+                        },
+                        {
+                            quantity: 2,
+                            sku: "VA22-SI-NA",
+                            // entered_options: [{
+                            //     uid: "MTI=",
+                            //     value: "Silver Amor Bangle Set"
+                            // }]
+                        },
+
+                    ]
+                };*/
                 const variables = {
                     cartId,
-                    product: {
-                        sku: product.sku,
-                        quantity
-                    },
-                    entered_options: [
+                    cartItems: [
                         {
-                            uid: product.uid,
-                            value: product.name
-                        }
+                            quantity: 1,
+                            sku: "VA20-SI-NA",
+                            entered_options: [{
+                                uid: "MTA=",
+                                value: "Semper Bangle Set"
+                            }]
+                        },
+                        {
+                            quantity: 1,
+                            sku: "VA23",
+                            entered_options: [{
+                                uid: "MTE2Nw==",
+                                value: "Augusta Trio"
+                            }]
+                        },
+                        {
+                            quantity: 2,
+                            sku: "VA22-SI-NA",
+                            entered_options: [{
+                                uid: "MTI=",
+                                value: "Silver Amor Bangle Set"
+                            }]
+                        },
+
                     ]
                 };
+
+
 
                 if (selectedOptionsArray.length) {
                     variables.product.selected_options = selectedOptionsArray;
                 }
-
                 try {
-                    await addProductToCart({ variables });
+                    await addProductsToCart({ variables });
                 } catch {
                     return;
                 }
@@ -390,7 +459,8 @@ export const useProductFullDetail = props => {
         },
         [
             addConfigurableProductToCart,
-            addProductToCart,
+            // addProductToCart,
+            addProductsToCart,
             addSimpleProductToCart,
             cartId,
             hasDeprecatedOperationProp,
@@ -424,7 +494,7 @@ export const useProductFullDetail = props => {
         description: product.description,
         name: product.name,
         price: productPrice,
-        sku: product.sku
+        sku: product.sku,
     };
 
     const derivedErrorMessage = useMemo(
@@ -432,11 +502,13 @@ export const useProductFullDetail = props => {
             deriveErrorMessage([
                 errorAddingSimpleProduct,
                 errorAddingConfigurableProduct,
-                errorAddingProductToCart
+                errorAddingProductToCart,
+                errorAddingProductsToCart
             ]),
         [
             errorAddingConfigurableProduct,
             errorAddingProductToCart,
+            errorAddingProductsToCart,
             errorAddingSimpleProduct
         ]
     );
@@ -481,6 +553,7 @@ export const useProductFullDetail = props => {
             isAddConfigurableLoading ||
             isAddSimpleLoading ||
             isAddProductLoading,
+            isAddProductsLoading,
         isSupportedProductType,
         mediaGalleryEntries,
         shouldShowWishlistButton:

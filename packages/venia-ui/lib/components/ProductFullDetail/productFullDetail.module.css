@@ -67,6 +67,10 @@
 
 .productPrice {
     display: block;
+    margin: 0 1.5rem;
+    color: #e74c3c;
+    font-size: 133%;
+    grid-area: options;
 }
 
 .imageCarousel {
@@ -96,7 +100,7 @@
 
 .quantity {
     composes: section;
-    grid-area: quantity;
+    /*grid-area: quantity;*/
 }
 
 .quantityTitle {
@@ -185,4 +189,17 @@
     justify-content: start;
     padding: 0.75rem;
     width: 100%;
+}
+
+.skuDetails {
+    display: block;
+    margin: 0 1.5rem;
+}
+
+.skuDetailsTitle {
+
+}
+
+.linkedProducts {
+    margin: 0px;
 }

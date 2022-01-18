@@ -18,6 +18,9 @@ import RichContent from '../RichContent/richContent';
 import { ProductOptionsShimmer } from '../ProductOptions';
 import defaultClasses from './productFullDetail.module.css';
 
+import RelatedProducts from '../RelatedProducts';
+import LinkedProducts from '../LinkedProducts';
+
 const WishlistButton = React.lazy(() => import('../Wishlist/AddToListButton'));
 const Options = React.lazy(() => import('../ProductOptions'));
 
@@ -37,7 +40,7 @@ const ERROR_FIELD_TO_MESSAGE_MAPPING = {
 
 const ProductFullDetail = props => {
     const { product } = props;
-
+    console.log('product >>>> ', product);
     const talonProps = useProductFullDetail({ product });
 
     const {
@@ -173,9 +176,21 @@ const ProductFullDetail = props => {
                     <h1 className={classes.productName}>
                         {productDetails.name}
                     </h1>
-                    <p>
-                        <span>{productDetails.sku}</span>
-                    </p>
+                </section>
+                <section className={classes.skuDetails}>
+                    <span className={classes.skuDetailsTitle}>
+                        <FormattedMessage
+                            id={'global.sku'}
+                            defaultMessage={'SKU: '}
+                        />
+                    </span>
+                    <strong>{productDetails.sku}</strong>
+                </section>
+                <section className={classes.productPrice}>
+                    <Price
+                        currencyCode={productDetails.price.currency}
+                        value={productDetails.price.value}
+                    />
                 </section>
                 <section className={classes.imageCarousel}>
                     <Carousel images={mediaGalleryEntries} />
@@ -191,22 +206,16 @@ const ProductFullDetail = props => {
                     <span className={classes.quantityTitle}>
                         <FormattedMessage
                             id={'global.quantity'}
-                            defaultMessage={'Quantity'}
+                            defaultMessage={'Vnt.'}
                         />
                     </span>
-                    <QuantityFields
+                    {/*<QuantityFields
                         classes={{ root: classes.quantityRoot }}
                         min={1}
                         message={errors.get('quantity')}
-                    />
+                    />*/}
                 </section>
                 <section className={classes.actions}>
-                    <p className={classes.productPrice}>
-                        <Price
-                            currencyCode={productDetails.price.currency}
-                            value={productDetails.price.value}
-                        />
-                    </p>
                     {cartActionContent}
                     <Suspense fallback={null}>
                         <WishlistButton {...wishlistButtonProps} />
@@ -221,27 +230,32 @@ const ProductFullDetail = props => {
                     </span>
                     <RichContent html={productDetails.description} />
                 </section>
-                <section className={classes.details}>
-                    <span className={classes.detailsTitle}>
-                        <FormattedMessage
-                            id={'global.sku'}
-                            defaultMessage={'SKU'}
-                        />
-                    </span>
-                    <strong>{productDetails.sku}</strong>
+                <section className={classes.linkedProducts}>
+                    <LinkedProducts classesName={classes} productDetails={productDetails} options={options} mediaGalleryEntries={mediaGalleryEntries} />
                 </section>
+
+                {/*<section className={classes.lpSec}>*/}
+                {/*    <LinkedProducts className={classes.linkedProducts} productDetails={productDetails} options={options} mediaGalleryEntries={mediaGalleryEntries} />*/}
+                {/*</section>*/}
+
             </Form>
+
+            {/*<RelatedProducts sku={productDetails.sku} classesName={classes}  />*/}
         </Fragment>
     );
 };
 
 ProductFullDetail.propTypes = {
     classes: shape({
+        lpSec: string,
+        linkedProducts: string,
         cartActions: string,
         description: string,
         descriptionTitle: string,
-        details: string,
-        detailsTitle: string,
+        skuDetails: string,
+        skuDetailsTitle: string,
+        // details: string,
+        // detailsTitle: string,
         imageCarousel: string,
         options: string,
         productName: string,
